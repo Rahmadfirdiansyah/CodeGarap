@@ -47,7 +47,7 @@
               <div class="text-xs text-slate-500 mt-0.5">{{ blog.date }}</div>
             </div>
             <span
-              class="text-xs font-mono px-2 py-1 rounded-full flex-shrink-0"
+              class="text-xs font-mono px-2 py-1 rounded-full"
               :class="blog.status === 'published'
                 ? 'bg-emerald-400/10 text-emerald-400'
                 : 'bg-slate-700 text-slate-400'"

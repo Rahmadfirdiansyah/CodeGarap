@@ -1,5 +1,6 @@
 // resources/js/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
 import BerandaPage  from '@/pages/BerandaPage.vue'
 import TentangPage  from '@/pages/TentangPage.vue'
@@ -12,6 +13,10 @@ import LoginPage    from '@/pages/LoginPage.vue'
 // Admin pages
 import AdminLayout  from '@/pages/admin/AdminLayout.vue'
 import AdminDashboard from '@/pages/admin/DashboardPage.vue'
+import AdminBlog        from '@/pages/admin/BlogPage.vue'
+import AdminLayanan     from '@/pages/admin/LayananPage.vue'
+import AdminTestimoni   from '@/pages/admin/TestimoniPage.vue'
+import AdminKontak      from '@/pages/admin/KontakPage.vue'
 
 const routes = [
     // Public
@@ -28,7 +33,11 @@ const routes = [
     component: AdminLayout,
     meta: { requiresAuth: true },
     children: [
-        { path: '', name: 'admin.dashboard', component: AdminDashboard },
+        { path: '',          name: 'admin.dashboard', component: AdminDashboard },
+        { path: 'blog',      name: 'admin.blog',      component: AdminBlog },
+        { path: 'layanan',   name: 'admin.layanan',   component: AdminLayanan },
+        { path: 'testimoni', name: 'admin.testimoni', component: AdminTestimoni },
+        { path: 'kontak',    name: 'admin.kontak',    component: AdminKontak },
     ],
 },
 
@@ -44,14 +53,17 @@ const router = createRouter({
     },
 })
 
-// Navigation Guard — cek token sebelum masuk halaman admin
-router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('token')
-    if (to.meta.requiresAuth && !token) {
-        next({ name: 'login' })
-    } else {
-        next()
-    }
+router.beforeEach(async (to, from, next) => {
+    if (!to.meta.requiresAuth) return next()
+
+    const { me, isChecked, user } = useAuth()
+
+    if (isChecked.value && user.value) return next() // ← INI yang ditambah
+
+    const valid = await me()
+    if (!valid) return next({ name: 'login' })
+    next()
 })
+
 
 export default router

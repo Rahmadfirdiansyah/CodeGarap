@@ -5,6 +5,7 @@ import router from '@/router'
 
 const user = ref(null)
 const token = ref(localStorage.getItem('token') || null)
+const isChecked = ref(false) // sudah dicek ke server atau belum
 
 export function useAuth() {
 
@@ -12,17 +13,12 @@ export function useAuth() {
         try {
             const res = await axios.post('/auth/login', { email, password })
 
-            // Simpan token
             token.value = res.data.token
             user.value  = res.data.user
             localStorage.setItem('token', res.data.token)
-
-            // Set header axios
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
 
-            // Redirect ke dashboard
             router.push({ name: 'admin.dashboard' })
-
             return { success: true }
         } catch (err) {
             return {
@@ -32,28 +28,46 @@ export function useAuth() {
         }
     }
 
-    const logout = async () => {
-        try {
-            await axios.post('/auth/logout')
-        } catch (e) {}
+    const logout = () => {
+        // Coba hapus token di server, tidak masalah kalau gagal
+        axios.post('/auth/logout').catch(() => {})
 
-        // Bersihkan semua data
-        token.value = null
-        user.value  = null
+        token.value  = null
+        user.value   = null
+        isChecked.value = false
         localStorage.removeItem('token')
         delete axios.defaults.headers.common['Authorization']
 
         router.push({ name: 'login' })
     }
 
+    // Validasi token ke server — ini yang paling penting
     const me = async () => {
+        const savedToken = localStorage.getItem('token')
+
+        // Tidak ada token sama sekali → langsung tolak
+        if (!savedToken) {
+            isChecked.value = true
+            return false
+        }
+
         try {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`
             const res = await axios.get('/auth/me')
-            user.value = res.data
+            user.value  = res.data
+            token.value = savedToken
+            isChecked.value = true
+            return true
         } catch (e) {
-            logout()
+            // Token tidak valid / expired → bersihkan semua
+            token.value  = null
+            user.value   = null
+            isChecked.value = true
+            localStorage.removeItem('token')
+            delete axios.defaults.headers.common['Authorization']
+            return false
         }
     }
 
-    return { user, token, login, logout, me }
+    return { user, token, isChecked, login, logout, me }
 }
