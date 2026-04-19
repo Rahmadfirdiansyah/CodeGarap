@@ -8,12 +8,7 @@
         <h2 class="text-xl font-bold text-white">Kelola Blog</h2>
         <p class="text-sm text-slate-500 font-mono mt-0.5">// {{ blogs.length }} artikel</p>
       </div>
-      <button
-        @click="openModal()"
-        class="bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-sm px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2"
-      >
-        ✍️ Tulis Blog
-      </button>
+      <BlogCreateModal @created="addBlog" />
     </div>
 
     <!-- Table -->
@@ -70,86 +65,16 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Modal Tambah / Edit -->
-    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-
-        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800">
-          <h3 class="font-bold text-white">{{ form.id ? 'Edit Blog' : 'Tulis Blog Baru' }}</h3>
-          <button @click="closeModal" class="text-slate-500 hover:text-white text-xl">✕</button>
-        </div>
-
-        <div class="p-6 space-y-5">
-          <div>
-            <label class="block text-xs font-mono text-slate-500 mb-2">JUDUL</label>
-            <input
-              v-model="form.title"
-              type="text"
-              placeholder="Judul artikel..."
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-400 transition-colors"
-            />
-          </div>
-
-          <div>
-            <label class="block text-xs font-mono text-slate-500 mb-2">EXCERPT</label>
-            <input
-              v-model="form.excerpt"
-              type="text"
-              placeholder="Ringkasan singkat artikel..."
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-400 transition-colors"
-            />
-          </div>
-
-          <div>
-            <label class="block text-xs font-mono text-slate-500 mb-2">KONTEN</label>
-            <textarea
-              v-model="form.content"
-              rows="8"
-              placeholder="Isi artikel..."
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-400 transition-colors resize-none"
-            ></textarea>
-          </div>
-
-          <div>
-            <label class="block text-xs font-mono text-slate-500 mb-2">STATUS</label>
-            <select
-              v-model="form.status"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-emerald-400 transition-colors"
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex gap-3 px-6 py-5 border-t border-slate-800">
-          <button
-            @click="saveBlog"
-            :disabled="loading"
-            class="flex-1 bg-emerald-400 hover:bg-emerald-300 disabled:opacity-50 text-slate-950 font-bold text-sm py-3 rounded-lg transition-colors"
-          >
-            {{ loading ? 'Menyimpan...' : (form.id ? 'Update' : 'Simpan') }}
-          </button>
-          <button
-            @click="closeModal"
-            class="px-6 py-3 rounded-lg border border-slate-800 text-slate-400 hover:text-white text-sm transition-colors"
-          >
-            Batal
-          </button>
-        </div>
-
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import BlogCreateModal from '../../components/BlogCreateModal.vue';
 
 export default {
   name: 'AdminBlogPage',
+  components: {BlogCreateModal},
   data() {
     return {
       blogs: [],
@@ -170,31 +95,8 @@ export default {
         console.error(e)
       }
     },
-    openModal(blog = null) {
-      if (blog) {
-        this.form = { ...blog }
-      } else {
-        this.form = { id: null, title: '', excerpt: '', content: '', status: 'draft' }
-      }
-      this.showModal = true
-    },
-    closeModal() {
-      this.showModal = false
-    },
-    async saveBlog() {
-      this.loading = true
-      try {
-        if (this.form.id) {
-          await axios.put(`/blogs/${this.form.id}`, this.form)
-        } else {
-          await axios.post('/blogs', this.form)
-        }
-        await this.fetchBlogs()
-        this.closeModal()
-      } catch (e) {
-        console.error(e)
-      }
-      this.loading = false
+    addBlog(blog) {
+      this.blogs.unshift(blog)
     },
     async deleteBlog(id) {
       if (!confirm('Yakin hapus blog ini?')) return

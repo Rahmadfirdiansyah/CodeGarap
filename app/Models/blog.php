@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['title', 'content', 'thumbnail', 'status', 'published_at', 'user_id'])]
+#[Fillable(['title', 'content', 'thumbnail', 'status', 'published_a t', 'user_id'])]
 
-class blog extends Model
+class Blog extends Model
 {
    public function user()
     {

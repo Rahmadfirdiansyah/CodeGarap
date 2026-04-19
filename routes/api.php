@@ -25,7 +25,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     // Blog — index & show publik, sisanya protected
-    Route::apiResource('blogs', BlogController::class)->except(['index']);
+    Route::apiResource('Blogs', BlogController::class)->except(['index']);
 
     // Layanan
     Route::apiResource('services', ServiceController::class);

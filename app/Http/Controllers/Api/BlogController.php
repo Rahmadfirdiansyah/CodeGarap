@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\blog;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -13,7 +13,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return response()->json(blog::with('user')->latest()->get());
+        return response()->json(Blog::with('user')->latest()->get());
     }
 
     /**
@@ -26,7 +26,7 @@ class BlogController extends Controller
             'content' => 'required|string',
         ]);
 
-        $blog = $request->user()->blogs()->create([
+        $Blog = $request->user()->Blogs()->create([
             'title'        => $request->title,
             'content'      => $request->content,
             'thumbnail'    => $request->thumbnail,
@@ -34,33 +34,33 @@ class BlogController extends Controller
             'published_at' => $request->status === 'published' ? now() : null,
         ]);
 
-        return response()->json(['message' => 'Blog dibuat', 'blog' => $blog], 201);
+        return response()->json(['message' => 'Blog dibuat', 'Blog' => $Blog], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(blog $blog)
+    public function show(Blog $Blog)
     {
-        return response()->json($blog->load('user'));
+        return response()->json($Blog->load('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, blog $blog)
+    public function update(Request $request, Blog $Blog)
     {
-        $blog->update($request->only(['title', 'content', 'thumbnail', 'status']));
+        $Blog->update($request->only(['title', 'content', 'thumbnail', 'status']));
 
-        return response()->json(['message' => 'Blog diupdate', 'blog' => $blog]);
+        return response()->json(['message' => 'Blog diupdate', 'Blog' => $Blog]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(blog $blog)
+    public function destroy(Blog $Blog)
     {
-        $blog->delete();
+        $Blog->delete();
 
         return response()->json(['message' => 'Blog dihapus']);
     }
