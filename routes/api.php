@@ -22,20 +22,28 @@ Route::prefix('auth')->group(function () {
 });
 
 // Protected Admin routes — wajib login
+// Protected Admin routes — wajib login
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Blog — index & show publik, sisanya protected
-    Route::apiResource('Blogs', BlogController::class)->except(['index']);
+    Route::apiResource('blogs', BlogController::class)->except(['index']); // ← kecil
 
-    // Layanan
     Route::apiResource('services', ServiceController::class);
 
-    // Testimoni
     Route::apiResource('testimonials', TestimoniController::class);
     Route::patch('testimonials/{id}/approve', [TestimoniController::class, 'approve']);
 
-    // Kontak
     Route::apiResource('contacts', ContactController::class);
     Route::patch('contacts/{id}/read',    [ContactController::class, 'markAsRead']);
     Route::patch('contacts/{id}/replied', [ContactController::class, 'markAsReplied']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/stats', function () {
+        return response()->json([
+            'blogs'        => \App\Models\Blog::count(),
+            // 'services'     => \App\Models\Service::where('is_active', true)->count(),
+            // 'testimonials' => \App\Models\Testimonial::count(),
+            // 'contacts'     => \App\Models\Contact::where('status', 'new')->count(),
+        ]);
+    });
 });

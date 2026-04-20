@@ -26,7 +26,7 @@ class BlogController extends Controller
             'content' => 'required|string',
         ]);
 
-        $Blog = $request->user()->Blogs()->create([
+        $blog = $request->user()->Blogs()->create([
             'title'        => $request->title,
             'content'      => $request->content,
             'thumbnail'    => $request->thumbnail,
@@ -34,7 +34,7 @@ class BlogController extends Controller
             'published_at' => $request->status === 'published' ? now() : null,
         ]);
 
-        return response()->json(['message' => 'Blog dibuat', 'Blog' => $Blog], 201);
+        return response()->json(['message' => 'Blog dibuat', 'Blog' => $blog], 201);
     }
 
     /**
