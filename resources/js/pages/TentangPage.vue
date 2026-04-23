@@ -195,28 +195,6 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-20 border-t border-slate-800">
-      <div class="container mx-auto px-6 text-center">
-        <div class="flex items-center justify-center gap-2 text-emerald-400 text-xs font-mono tracking-widest mb-4">
-          <span class="w-5 h-px bg-emerald-400"></span> MULAI SEKARANG <span class="w-5 h-px bg-emerald-400"></span>
-        </div>
-        <h2 class="text-4xl font-black tracking-tight mb-4">
-          Mau Kenal Lebih Dekat?<br>
-          <span class="text-emerald-400">Ngobrol Dulu Yuk!</span>
-        </h2>
-        <p class="text-slate-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-          Konsultasi gratis, tanpa komitmen. Ceritakan tugasmu dan kami bantu carikan solusi terbaik.
-        </p>
-        
-          <a :href="waLink"
-          target="_blank"
-          class="inline-flex items-center gap-3 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold px-10 py-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-400/25"
-        >
-          💬 Ngobrol via WhatsApp
-        </a>
-      </div>
-    </section>
 
   </div>
 </template>

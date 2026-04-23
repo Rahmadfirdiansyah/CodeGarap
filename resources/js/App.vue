@@ -34,7 +34,7 @@ export default {
   components: { NavBar, FooterSection },
   data() {
     return {
-      waNumber: '6281234567890',
+      waNumber: '6288235896651',
     }
   },
   computed: {
@@ -43,7 +43,7 @@ export default {
       return this.$route.path.startsWith('/admin')
     },
     waLink() {
-      return `https://wa.me/${this.waNumber}?text=Halo%20CodeGarap%2C%20saya%20mau%20pesan%20jasa%20tugas!`
+      return `https://wa.me/${this.waNumber}?text=Halo%20Min%2C%20saya%20mau%20pesan%20jasa%20tugas!`
     },
   },
 }

@@ -25,7 +25,7 @@
                         >
                         <span
                             class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-base">📱</span>
-                        +62 812-XXXX-XXXX
+                        +62 882-3589-6651       
                         </a>
 
                         <a :href="emailLink"
@@ -98,7 +98,7 @@ export default {
     name: 'FooterSection',
     data() {
         return {
-            waNumber: '6281234567890',
+            waNumber: '6288235896651',
             navLinks: [
                 { label: 'Beranda', path: '/' },
                 { label: 'Tentang', path: '/tentang' },
@@ -119,7 +119,7 @@ export default {
     },
     computed: {
         waLink() {
-            return `https://wa.me/${this.waNumber}?text=Halo%20CodeGarap%2C%20saya%20mau%20pesan%20jasa%20tugas!`
+            return `https://wa.me/${this.waNumber}?text=Halo%20Min%2C%20saya%20mau%20pesan%20jasa%20tugas!`
         },
         currentYear() {
             return new Date().getFullYear()
