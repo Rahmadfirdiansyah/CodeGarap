@@ -9,6 +9,7 @@ import HargaPage    from '@/pages/HargaPage.vue'
 import BlogPage     from '@/pages/BlogPage.vue'
 import KontakPage   from '@/pages/KontakPage.vue'
 import LoginPage    from '@/pages/LoginPage.vue'
+import post from '../pages/post.vue'
 
 // Admin pages
 import AdminLayout  from '@/pages/admin/AdminLayout.vue'
@@ -27,7 +28,8 @@ const routes = [
     { path: '/blog',    name: 'blog',     component: BlogPage },
     { path: '/kontak',  name: 'kontak',   component: KontakPage },
     { path: '/login',   name: 'login',    component: LoginPage },
-
+    { path: '/post', name: 'post',     component: post },
+    
     {
     path: '/admin',
     component: AdminLayout,

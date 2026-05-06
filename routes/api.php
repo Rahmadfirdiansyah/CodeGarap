@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\TestimoniController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -20,6 +21,8 @@ Route::prefix('auth')->group(function () {
         Route::get('/me',      [AuthController::class, 'me']);
     });
 });
+
+Route::apiResource('posts', PostController::class);
 
 // Protected Admin routes — wajib login
 // Protected Admin routes — wajib login
